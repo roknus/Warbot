@@ -6,7 +6,7 @@ import edu.turtlekit2.warbot.WarBrain;
 import edu.turtlekit2.warbot.message.WarMessage;
 import edu.turtlekit2.warbot.percepts.Percept;
 
-public class BrainRocketLauncher extends WarBrain
+public class BrainRocketLauncher extends BrainUnit
 {
 	private boolean warbase;
 	
@@ -29,9 +29,6 @@ public class BrainRocketLauncher extends WarBrain
 			if(m.getMessage().equals("EnemyBase"))
 			{
 				this.setWarbase(true);
-//				System.out.println(this.getHeading());
-//				System.out.println(m.getAngle());
-//				System.out.println(m.getContent()[0]);
 				this.setHeading(m.getAngle()+Double.parseDouble(m.getContent()[0]));
 			}
 		}

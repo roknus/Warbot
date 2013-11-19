@@ -1,0 +1,21 @@
+package edu.turtlekit2.warbot.roknus;
+
+public abstract class BrainUnit extends BrainAgent 
+{
+	private double myBaseAngle;
+	private double myBaseDistance;
+	public double getMyBaseAngle() {
+		return myBaseAngle;
+	}
+	public void setMyBaseAngle(double myBaseAngle) {
+		this.myBaseAngle = myBaseAngle;
+	}
+	public double getMyBaseDistance() {
+		return myBaseDistance;
+	}
+	public void setMyBaseDistance(double myBaseDistance) {
+		this.myBaseDistance = myBaseDistance;
+	}
+	
+	
+}

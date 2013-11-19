@@ -1,0 +1,6 @@
+package edu.turtlekit2.warbot.roknus;
+
+public abstract class BrainUnit extends BrainAgent 
+{
+
+}

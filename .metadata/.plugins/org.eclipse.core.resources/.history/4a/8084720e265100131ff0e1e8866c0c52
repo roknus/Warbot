@@ -1,0 +1,10 @@
+package edu.turtlekit2.warbot.roknus;
+
+public abstract class BrainUnit extends BrainAgent 
+{
+	private double myBaseAngle;
+	private double myBaseDistance;
+	
+	private double enemyBaseAngle;
+	private double enemyBaseDistance;
+}

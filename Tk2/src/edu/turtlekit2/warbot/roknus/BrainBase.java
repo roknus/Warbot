@@ -2,29 +2,29 @@ package edu.turtlekit2.warbot.roknus;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.turtlekit2.warbot.WarBrain;
 import edu.turtlekit2.warbot.message.WarMessage;
 
-public class BrainBase extends WarBrain{
-	
+/**
+ * Class of the Brain Base, it implement specifics methods and attributes of the base
+ * @author Lucia Florent, Lagniez Jean-Marc
+ * @version 0.1
+ */
+public class BrainBase extends BrainAgent
+{
     ArrayList<dataExplorerRocket> explorer;
     ArrayList<dataExplorerRocket> rocket;
-    private double distanceBaseEnemy;
-	private double angleBaseEnemy;
 
 	public BrainBase()
 	{
 		explorer = new ArrayList<dataExplorerRocket>();
 		rocket = new ArrayList<dataExplorerRocket>();
-		this.angleBaseEnemy = 0;
-		this.distanceBaseEnemy = 0;
 	}
 
 	@Override
 	public String action() {
 		
-		if(!emptyBag()){
+		if(!emptyBag())
+		{
 			return "eat";
 		}		
 
@@ -62,7 +62,7 @@ public class BrainBase extends WarBrain{
 							{
 								a+=360;
 							}
-							d.setAngle(a-this.getHeading());
+							d.setAngle(a-getEnemyBaseAngle());
 							d.setDistance(m.getDistance());
 							test = false;
 						}
@@ -75,15 +75,15 @@ public class BrainBase extends WarBrain{
 			}
 			else if(m.getMessage().equals("EnemyBase"))
 			{
-				this.setAngleBaseEnemy(m.getAngle() + Double.parseDouble(m.getContent()[0]));
-				this.setDistanceBaseEnemy(Double.parseDouble(m.getContent()[1]));
-				this.setHeading(this.getAngleBaseEnemy());
+				this.setEnemyBaseAngle((m.getAngle() + Double.parseDouble(m.getContent()[0])));
+				this.setEnemyBaseDistance((Double.parseDouble(m.getContent()[1])));
+//				this.setHeading(getEnemyBaseAngle());
 				
 		        for(dataExplorerRocket r : rocket)
 		        {
 		                String content[] = new String[1];
-		                double D = this.getDistance(this.getDistanceBaseEnemy(), r.getDistance(), r.getAngle());
-		                double A = this.getAngle(r.getDistance(), D, this.getDistanceBaseEnemy());
+		                double D = this.getDistance(getEnemyBaseDistance(), r.getDistance(), r.getAngle());
+		                double A = this.getAngle(r.getDistance(), D, getEnemyBaseDistance());
 		                
 		                double B = r.getAngle();
 		                if(B > 0)
@@ -99,7 +99,6 @@ public class BrainBase extends WarBrain{
 		        }				
 			}					
 		}
-		
 		broadcastMessage("WarExplorer", "WarBasePosition", null);
 		broadcastMessage("WarRocketLauncher", "WarBasePosition", null);
 		
@@ -110,53 +109,5 @@ public class BrainBase extends WarBrain{
 		}
 		
 		return "action";
-	}
-	
-
-	/**
-	 * Al-Kashi theorem to find a side of a triangle when you have its opposite angle and the two others side
-	 * @param A First side of the angle
-	 * @param B Second side of the angle
-	 * @param gamma Opposite angle of the side we are searching
-	 * @return Return the opposite side of the angle
-	 */
-	public double getDistance(double A,double B, double gamma)
-	{
-		return Math.sqrt(Math.pow(A, 2) + Math.pow(B, 2) - (2 * B * A * Math.cos(Math.toRadians(gamma))));
-	}
-	
-	/**
-	 * Al-Kashi theorem to find an angle of a triangle when you have the length of the 3 sides
-	 * @param A First side of the angle
-	 * @param B Second side of the angle
-	 * @param C Opposite side of the angle
-	 * @return Return the angle in degree between A and B
-	 */
-	public double getAngle(double A, double B, double C)
-	{
-		if(A > 0 && B > 0) // Division by 0
-		{
-			double a = (Math.pow(A, 2) + Math.pow(B, 2) - Math.pow(C, 2)) / (2 * A * B);
-			if(a > -1 && a < 1) // Arccos take parameters between -1 and 1
-			{
-				return Math.toDegrees(Math.acos(a));
-			}
-		}
-		return 180; // For particular case (2AB close to 0 and (a < -1 && a > 1)) the return is close to 180°
-	}
-
-	public double getAngleBaseEnemy() {
-		return angleBaseEnemy;
-	}
-
-	public void setAngleBaseEnemy(double baseEnemy) {
-		this.angleBaseEnemy = baseEnemy;
-	}	
-	public double getDistanceBaseEnemy() {
-		return distanceBaseEnemy;
-	}
-
-	public void setDistanceBaseEnemy(double distanceBaseEnemy) {
-		this.distanceBaseEnemy = distanceBaseEnemy;
 	}
 }

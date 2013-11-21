@@ -23,7 +23,7 @@ public class BrainExplorer extends BrainUnit
 		{
 			for(WarMessage m : listeM)
 			{
-				if(m.getType().equals("WarBase"))
+				if(m.getSenderType().equals("WarBase"))
 				{
 					if(m.getMessage().equals("WarBasePosition"))
 					{
@@ -40,7 +40,7 @@ public class BrainExplorer extends BrainUnit
 			{
 				if(p.getType().equals("WarBase") && !p.getTeam().equals(getTeam()))
 				{
-					double angleGamma = (p.getAngle() - getMyBaseAngle());
+					double angleGamma = (p.getAngle()%360 - getMyBaseAngle());
 					double d = this.getDistanceAlKashi(p.getDistance(), getMyBaseDistance(), angleGamma);
 					double a = this.getAngleAlKashi(d, getMyBaseDistance(), p.getDistance());
 					

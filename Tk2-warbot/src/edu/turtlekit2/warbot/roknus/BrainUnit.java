@@ -18,7 +18,7 @@ public abstract class BrainUnit extends BrainAgent
 	}
 	public void setMyBaseAngle(double myBaseAngle) 
 	{
-		this.myBaseAngle = (myBaseAngle < 0) ? myBaseAngle += 360 : myBaseAngle;
+		this.myBaseAngle = (myBaseAngle < 0) ? myBaseAngle + 360 : myBaseAngle;
 	}
 	public double getMyBaseDistance() 
 	{

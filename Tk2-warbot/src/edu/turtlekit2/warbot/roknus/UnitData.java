@@ -40,7 +40,7 @@ public class UnitData
 
 	public void setAngle(double angle) 
 	{
-		this.angle = (angle < 0) ? angle += 360 : angle;
+		this.angle = (angle < 0) ? angle + 360 : angle;
 	}
 
 	public double getAngleEnemyBase() 

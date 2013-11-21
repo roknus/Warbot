@@ -13,7 +13,8 @@ public class BrainRocketLauncher extends WarBrain{
 	}
 	
 	@Override
-	public String action() {
+	public String action() 
+	{
 //		if(!isReloaded()){
 //			if(!isReloading()){
 //				return "reload";

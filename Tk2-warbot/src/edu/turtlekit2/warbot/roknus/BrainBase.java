@@ -90,12 +90,12 @@ public class BrainBase extends BrainAgent
 			}
 			else if(m.getMessage().equals("EnemyWarBasePosition"))
 			{
-				setEnemyBaseAngle((m.getAngle() + Double.parseDouble(m.getContent()[0])));
+				setEnemyBaseAngle((m.getAngle()%360 + Double.parseDouble(m.getContent()[0])));
 				setEnemyBaseDistance((Double.parseDouble(m.getContent()[1])));
 				
 		        for(UnitData r : warRocketLauncherList)
 		        {
-		        		r.setAngleEnemyBase(r.getAngle() - getEnemyBaseAngle());
+		        		r.setAngleEnemyBase(r.getAngle()%360 - getEnemyBaseAngle());
 		                double d = getDistanceAlKashi(getEnemyBaseDistance(), r.getDistance(), r.getAngleEnemyBase());
 		                double a = getAngleAlKashi(r.getDistance(), d, getEnemyBaseDistance());
 

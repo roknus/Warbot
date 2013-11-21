@@ -71,7 +71,7 @@ public abstract class BrainAgent extends WarBrain
 	 */
 	public void setEnemyBaseAngle(double enemyBaseAngle) 
 	{
-		this.enemyBaseAngle = (enemyBaseAngle < 0) ? enemyBaseAngle += 360 : enemyBaseAngle; // If the angle is between -180 and 0, tranform it in an angle between 0 and 360
+		this.enemyBaseAngle = (enemyBaseAngle < 0) ? enemyBaseAngle + 360 : enemyBaseAngle; // If the angle is between -180 and 0, tranform it in an angle between 0 and 360
 	}
 
 	/**

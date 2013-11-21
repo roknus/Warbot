@@ -28,7 +28,7 @@ public class BrainRocketLauncher extends BrainUnit
 			if(m.getMessage().equals("EnemyWarBasePosition"))
 			{
 				this.setWarbase(true);
-				this.setHeading(m.getAngle()+Double.parseDouble(m.getContent()[0]));
+				this.setHeading(m.getAngle()%360+Double.parseDouble(m.getContent()[0]));
 			}
 		}
 		this.broadcastMessage("WarBase", "MyPosition", null);

@@ -40,16 +40,14 @@ public class BrainExplorer extends BrainUnit
 			{
 				if(p.getType().equals("WarBase") && !p.getTeam().equals(getTeam()))
 				{
-					double anglePercept = p.getAngle();
-					if(anglePercept < 0)
-						anglePercept += 360;
-					
-					double angleGamma = (anglePercept - getMyBaseAngle());
+					double ap = p.getAngle();
+					double angleGamma = (p.getAngle()%360 - getMyBaseAngle());
 					double d = this.getDistanceAlKashi(p.getDistance(), getMyBaseDistance(), angleGamma);
 					double a = this.getAngleAlKashi(d, getMyBaseDistance(), p.getDistance());
 					
 					String[] content = new String[2];
-					content[0] = Double.toString(((angleGamma > 180) || ((angleGamma < 0) && (angleGamma > -180))) ? a : -a);
+//					content[0] = Double.toString((angleGamma < 0) ? a : -a);
+					content[0] = Double.toString(-a);
 					content[1] = Double.toString(d);
 					
 					System.out.println(angleGamma);

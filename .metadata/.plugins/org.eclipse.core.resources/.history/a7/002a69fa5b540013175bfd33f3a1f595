@@ -42,8 +42,9 @@ public class BrainExplorer extends BrainUnit
 				{
 					double anglePercept = p.getAngle();
 					if(anglePercept < 0)
+					{
 						anglePercept += 360;
-					
+					}
 					double angleGamma = (anglePercept - getMyBaseAngle());
 					double d = this.getDistanceAlKashi(p.getDistance(), getMyBaseDistance(), angleGamma);
 					double a = this.getAngleAlKashi(d, getMyBaseDistance(), p.getDistance());

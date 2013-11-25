@@ -1,0 +1,12 @@
+/**
+* Authors : Lucia Florent, Lagniez Jean-Marc
+* Version : 0.1
+*
+* Exchange message protocol for warbot agents.
+*
+* The protocol syntax is :
+* 	- "ProtocolName" :
+* 	Followed by the list of arguments in the right order :
+* 		- "Argument name" : "Argument type" := "Description of the argument"
+*/
+

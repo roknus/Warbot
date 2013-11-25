@@ -1,0 +1,9 @@
+package edu.turtlekit2.warbot.roknus.FSM;
+
+public class StateAttack {
+
+	public StateAttack() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,38 @@
+package edu.turtlekit2.warbot.roknus.FSM;
+
+import edu.turtlekit2.warbot.roknus.BrainAgent;
+
+public abstract class AbstractState
+{
+	private String stateName;
+	private BrainAgent brain;
+	
+	public AbstractState()
+	{
+		setStateName("unknown");
+		setBrain(null);
+	}
+	
+	public
+
+	public String getStateName()
+	{
+		return stateName;
+	}
+
+	public void setStateName(String stateName) 
+	{
+		this.stateName = stateName;
+	}
+
+	public BrainAgent getBrain() 
+	{
+		return brain;
+	}
+
+	public void setBrain(BrainAgent brain)
+	{
+		this.brain = brain;
+	}
+	
+}

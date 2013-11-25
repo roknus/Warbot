@@ -1,0 +1,9 @@
+package edu.turtlekit2.warbot.roknus.FSMBase;
+
+public class StateDefense {
+
+	public StateDefense() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

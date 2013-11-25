@@ -1,0 +1,116 @@
+package edu.turtlekit2.warbot.roknus.FSMBase;
+
+import java.util.List;
+
+import edu.turtlekit2.warbot.message.WarMessage;
+import edu.turtlekit2.warbot.roknus.BrainBase;
+import edu.turtlekit2.warbot.roknus.UnitData;
+
+public abstract class State
+{
+	private String stateName;
+	private BrainBase brain;
+	
+	public State()
+	{
+		setStateName("unknown");
+		setBrain(null);
+	}
+	
+	public State(String stateName, BrainBase brain)
+	{
+		setStateName(stateName);
+		setBrain(brain);
+	}
+	
+	public String action()
+	{
+		return "idle";
+	}
+	
+	/**
+	 * Handle the new messages received since the previous tick
+	 */
+	protected void messageHandler()
+	{
+		List<WarMessage> liste = getBrain().getMessage();
+		
+		for(WarMessage m : liste)
+		{
+			if(m.getMessage().equals("MyPosition"))
+			{
+				boolean test = true;
+				if(m.getSenderType().equals("WarExplorer"))
+				{
+					for(UnitData d : getBrain().getWarExplorerList())
+					{
+						if(m.getSender() == d.getId())
+						{
+							d.setAngle(m.getAngle());
+							d.setDistance(m.getDistance());
+							test = false;
+						}
+					}
+					if(test)
+					{
+						getBrain().getWarExplorerList().add(new UnitData(m.getSender(),m.getAngle(),m.getDistance()));
+					}
+				}
+				else if(m.getSenderType().equals("WarRocketLauncher"))
+				{
+					for(UnitData d : getBrain().getWarRocketLauncherList())
+					{
+						if(m.getSender() == d.getId())
+						{
+							d.setAngle(m.getAngle());
+							d.setDistance(m.getDistance());
+							test = false;
+						}
+					}
+					if(test)
+					{
+						getBrain().getWarRocketLauncherList().add(new UnitData(m.getSender(),m.getAngle(),m.getDistance()));
+					}
+				}
+			}
+			else if(m.getMessage().equals("EnemyWarBasePosition"))
+			{
+				getBrain().setEnemyBaseAngle((m.getAngle()%360 + Double.parseDouble(m.getContent()[0])));
+				getBrain().setEnemyBaseDistance((Double.parseDouble(m.getContent()[1])));
+				
+		        for(UnitData r : getBrain().getWarRocketLauncherList())
+		        {
+		        		r.setAngleEnemyBase(r.getAngle()%360 - getBrain().getEnemyBaseAngle());
+		                double d = getBrain().getDistanceAlKashi(getBrain().getEnemyBaseDistance(), r.getDistance(), r.getAngleEnemyBase());
+		                double a = getBrain().getAngleAlKashi(r.getDistance(), d, getBrain().getEnemyBaseDistance());
+
+		                String content[] = new String[1];
+		                content[0] = Double.toString((r.getAngleEnemyBase() > 0) ? a : -a);    
+		                
+		                getBrain().sendMessage(r.getId(),"EnemyWarBasePosition",content);
+		        }				
+			}					
+		}
+	}
+
+	public String getStateName()
+	{
+		return stateName;
+	}
+
+	public void setStateName(String stateName) 
+	{
+		this.stateName = stateName;
+	}
+
+	public BrainBase getBrain() 
+	{
+		return brain;
+	}
+
+	public void setBrain(BrainBase brain)
+	{
+		this.brain = brain;
+	}
+	
+}

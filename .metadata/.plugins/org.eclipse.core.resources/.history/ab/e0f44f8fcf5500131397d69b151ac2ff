@@ -1,0 +1,6 @@
+package edu.turtlekit2.warbot.roknus.FSM;
+
+public interface StateInterface 
+{
+	
+}

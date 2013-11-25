@@ -1,0 +1,10 @@
+package edu.turtlekit2.warbot.roknus.FSM;
+
+import edu.turtlekit2.warbot.roknus.BrainAgent;
+
+public abstract class AbstractState
+{
+	private String stateName;
+	private BrainAgent brain;
+	
+}

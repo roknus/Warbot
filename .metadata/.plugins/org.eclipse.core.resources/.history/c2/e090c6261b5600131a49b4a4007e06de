@@ -1,0 +1,83 @@
+package edu.turtlekit2.warbot.roknus.FSMRocketLauncher;
+
+import java.util.List;
+
+import edu.turtlekit2.warbot.message.WarMessage;
+import edu.turtlekit2.warbot.percepts.Percept;
+import edu.turtlekit2.warbot.roknus.BrainRocketLauncher;
+import edu.turtlekit2.warbot.roknus.FSMBase.StateAttack;
+
+public abstract class State
+{
+	private String stateName;
+	private BrainRocketLauncher brain;
+	
+	public State()
+	{
+		setStateName("unknown");
+		setBrain(null);
+	}
+	
+	public State(String stateName, BrainRocketLauncher brain)
+	{
+		setStateName(stateName);
+		setBrain(brain);
+	}
+
+	public String action()
+	{
+		return "idle";
+	}
+	
+	protected void messageHandler()
+	{
+		List<WarMessage> listeM = getBrain().getMessage();
+		
+		for(WarMessage m : listeM)
+		{
+			if(m.getMessage().equals("WarBasePosition") && !getBrain().getWarbase())
+			{
+				//this.setHeading(m.getAngle());
+			}
+			if(m.getMessage().equals("EnemyWarBasePosition"))
+			{
+				getBrain().setWarbase(true);
+				getBrain().setHeading(m.getAngle()+Double.parseDouble(m.getContent()[0]));
+			}
+		}
+	}
+	
+	protected void perceptHandler()
+	{
+		List<Percept> listeP = getBrain().getPercepts();
+		
+		for(Percept p : listeP)
+		{
+			if(p.getType().equals("WarBase") && !p.getTeam().equals(getBrain().getTeam()))
+			{
+				getBrain().setState(new StateAttack(getBrain()));
+			}
+		}
+	}
+	
+	public String getStateName()
+	{
+		return stateName;
+	}
+
+	public void setStateName(String stateName) 
+	{
+		this.stateName = stateName;
+	}
+
+	public BrainRocketLauncher getBrain() 
+	{
+		return brain;
+	}
+
+	public void setBrain(BrainRocketLauncher brain)
+	{
+		this.brain = brain;
+	}
+	
+}

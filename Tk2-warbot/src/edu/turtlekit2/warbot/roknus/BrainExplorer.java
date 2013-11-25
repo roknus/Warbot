@@ -22,4 +22,13 @@ public class BrainExplorer extends BrainUnit
 	{
 		return state.action();
 	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state)
+	{
+		this.state = state;
+	}
 }

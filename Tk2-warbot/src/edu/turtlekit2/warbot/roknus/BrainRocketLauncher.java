@@ -4,8 +4,7 @@ import java.util.List;
 
 import edu.turtlekit2.warbot.message.WarMessage;
 import edu.turtlekit2.warbot.percepts.Percept;
-import edu.turtlekit2.warbot.roknus.FSMRocketLauncher.State;
-import edu.turtlekit2.warbot.roknus.FSMRocketLauncher.StateDefense;
+import edu.turtlekit2.warbot.roknus.FSMRocketLauncher.*;
 
 public class BrainRocketLauncher extends BrainUnit
 {
@@ -21,6 +20,7 @@ public class BrainRocketLauncher extends BrainUnit
 	@Override
 	public String action() 
 	{
+		System.out.println(getState().getStateName());
 		return state.action();
 	}
 
@@ -30,5 +30,13 @@ public class BrainRocketLauncher extends BrainUnit
 
 	public void setWarbase(boolean warbase) {
 		this.warbase = warbase;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 }

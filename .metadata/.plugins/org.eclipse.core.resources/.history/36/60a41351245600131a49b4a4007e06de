@@ -1,0 +1,40 @@
+package edu.turtlekit2.warbot.roknus.FSMExplorer;
+
+import edu.turtlekit2.warbot.percepts.Percept;
+import edu.turtlekit2.warbot.roknus.BrainExplorer;
+import edu.turtlekit2.warbot.roknus.FSMRocketLauncher.StateAttack;
+
+public class StateDefense extends State
+{
+	public StateDefense(BrainExplorer brain)
+	{
+		super("Defense", brain);
+	}
+	
+	public String action()
+	{
+		messageHandler();
+		perceptHandler();
+		
+		getBrain().broadcastMessage("WarBase", "MyPosition", null);
+		
+		while(getBrain().isBlocked())
+		{                       
+			getBrain().setRandomHeading();
+		}
+		return "move";
+	}
+	
+	protected void perceptHandler()
+	{		
+		this.super();
+		for(Percept p : listeP)
+		{
+			if(p.getType().equals("WarBase") && !p.getTeam().equals(getBrain().getTeam()))
+			{
+				getBrain().setState(new StateAttack(getBrain()));
+			}
+		}
+	}
+
+}

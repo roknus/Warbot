@@ -3,6 +3,7 @@ package edu.turtlekit2.warbot.roknus.FSMBase;
 import java.util.List;
 
 import edu.turtlekit2.warbot.message.WarMessage;
+import edu.turtlekit2.warbot.percepts.Percept;
 import edu.turtlekit2.warbot.roknus.BrainBase;
 import edu.turtlekit2.warbot.roknus.UnitData;
 

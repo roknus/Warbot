@@ -3,6 +3,7 @@ package edu.turtlekit2.warbot.roknus.FSMRocketLauncher;
 import java.util.List;
 
 import edu.turtlekit2.warbot.message.WarMessage;
+import edu.turtlekit2.warbot.percepts.Percept;
 import edu.turtlekit2.warbot.roknus.BrainRocketLauncher;
 
 public abstract class State
@@ -43,6 +44,11 @@ public abstract class State
 				getBrain().setHeading(m.getAngle()+Double.parseDouble(m.getContent()[0]));
 			}
 		}
+	}
+	
+	protected void perceptHandler()
+	{
+
 	}
 	
 	public String getStateName()

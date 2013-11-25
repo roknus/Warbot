@@ -1,5 +1,8 @@
 package edu.turtlekit2.warbot.roknus.FSMExplorer;
 
+import java.util.List;
+
+import edu.turtlekit2.warbot.percepts.Percept;
 import edu.turtlekit2.warbot.roknus.BrainExplorer;
 
 public class StateDefense extends State

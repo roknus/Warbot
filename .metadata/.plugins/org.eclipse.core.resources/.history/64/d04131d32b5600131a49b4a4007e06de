@@ -1,0 +1,58 @@
+package edu.turtlekit2.warbot.roknus.FSMRocketLauncher;
+
+import java.util.List;
+
+import edu.turtlekit2.warbot.percepts.Percept;
+import edu.turtlekit2.warbot.roknus.BrainRocketLauncher;
+
+public class StateAttack extends State 
+{
+	public StateAttack(BrainRocketLauncher brain)
+	{
+		super("Attack", brain);
+	}
+	
+	public String action()
+	{
+		messageHandler();
+		perceptHandler();
+		
+		getBrain().broadcastMessage("WarBase", "MyPosition", null);
+		
+
+		if(!isReloaded())
+		{
+			if(!isReloading())
+			{
+				return "reload";
+			}
+		}
+	
+		
+		if(getBrain().getWarbase())
+		{
+			return "fire";
+		}
+		
+		while(getBrain().isBlocked())
+		{
+			getBrain().setRandomHeading();
+		}
+
+		return "move";
+	}
+	
+	protected void perceptHandler()
+	{		
+		List<Percept> listeP = getBrain().getPercepts();
+		
+		for(Percept p : listeP)
+		{
+			if(p.getType().equals("WarBase") && !p.getTeam().equals(getBrain().getTeam()))
+			{
+				getBrain().setWarbase(true);
+				getBrain().setAngleTurret(p.getAngle());
+			}
+		}
+	}
+}

@@ -1,0 +1,68 @@
+package edu.turtlekit2.warbot.roknus.FSMRocketLauncher;
+
+import java.util.List;
+
+import edu.turtlekit2.warbot.message.WarMessage;
+import edu.turtlekit2.warbot.roknus.BrainRocketLauncher;
+
+public abstract class State
+{
+	private String stateName;
+	private BrainRocketLauncher brain;
+	
+	public State()
+	{
+		setStateName("unknown");
+		setBrain(null);
+	}
+	
+	public State(String stateName, BrainRocketLauncher brain)
+	{
+		setStateName(stateName);
+		setBrain(brain);
+	}
+
+	public String action()
+	{
+		return "idle";
+	}
+	
+	protected void messageHandler()
+	{
+		List<WarMessage> listeM = getMessage();
+		
+		for(WarMessage m : listeM)
+		{
+			if(m.getMessage().equals("WarBasePosition") && !this.getWarbase())
+			{
+				//this.setHeading(m.getAngle());
+			}
+			if(m.getMessage().equals("EnemyWarBasePosition"))
+			{
+				this.setWarbase(true);
+				this.setHeading(m.getAngle()+Double.parseDouble(m.getContent()[0]));
+			}
+		}
+	}
+	
+	public String getStateName()
+	{
+		return stateName;
+	}
+
+	public void setStateName(String stateName) 
+	{
+		this.stateName = stateName;
+	}
+
+	public BrainRocketLauncher getBrain() 
+	{
+		return brain;
+	}
+
+	public void setBrain(BrainRocketLauncher brain)
+	{
+		this.brain = brain;
+	}
+	
+}

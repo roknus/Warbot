@@ -4,90 +4,24 @@ import java.util.List;
 
 import edu.turtlekit2.warbot.message.WarMessage;
 import edu.turtlekit2.warbot.percepts.Percept;
+import edu.turtlekit2.warbot.roknus.FSMRocketLauncher.State;
+import edu.turtlekit2.warbot.roknus.FSMRocketLauncher.StateDefense;
 
 public class BrainRocketLauncher extends BrainUnit
 {
 	private boolean warbase;
+	private State state;
 	
 	public BrainRocketLauncher()
 	{
+		state = new StateDefense(this);
 		setWarbase(false);
 	}
 	
 	@Override
 	public String action() 
 	{
-		List<WarMessage> listeM = getMessage();
-	
-		for(WarMessage m : listeM)
-		{
-			if(m.getMessage().equals("WarBasePosition") && !this.getWarbase())
-			{
-				//this.setHeading(m.getAngle());
-			}
-			if(m.getMessage().equals("EnemyWarBasePosition"))
-			{
-				this.setWarbase(true);
-				this.setHeading(m.getAngle()%360+Double.parseDouble(m.getContent()[0]));
-			}
-		}
-		this.broadcastMessage("WarBase", "MyPosition", null);
-		
-		while(this.isBlocked())
-		{
-			this.setRandomHeading();
-		}
-
-		return "move";
-		
-//		if(!isReloaded()){
-//			if(!isReloading()){
-//				return "reload";
-//			}
-//		}
-//		
-//		List<Percept> listeP = getPercepts();
-//		List<WarMessage> listeM = getMessage();
-//		
-//		
-//		Percept bestPercept = null;
-//		
-//		if(listeM.size() == 0){
-//			for(Percept p : listeP){
-//				if(p.getType().equals("WarBase") && !p.getTeam().equals(getTeam())){
-//					bestPercept = p;
-//				}
-//			}
-//			
-//			if(bestPercept != null){
-//				broadcastMessage("WarRocketLauncher", "base", null);
-//				setAngleTurret(bestPercept.getAngle());
-//				return "fire";
-//			}else{
-//				while(isBlocked()){
-//					setRandomHeading();
-//				}
-//				return "move";
-//			}
-//		}else{
-//			for(Percept p : listeP){
-//				if(p.getType().equals("WarBase") && !p.getTeam().equals(getTeam())){
-//					bestPercept = p;
-//				}
-//			}
-//			
-//			if(bestPercept != null){
-//				broadcastMessage("WarRocketLauncher", "base", null);
-//				setAngleTurret(bestPercept.getAngle());
-//				return "fire";
-//			}else if(listeM.size()>0){
-//				WarMessage tmp = listeM.get(0);
-//				reply(tmp, "j'arrive", null);
-//				setHeading(tmp.getAngle());
-//			}
-//		}
-//		
-//		return "move";
+		return state.action();
 	}
 
 	public boolean getWarbase() {

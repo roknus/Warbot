@@ -1,0 +1,80 @@
+package edu.turtlekit2.warbot.roknus;
+
+import java.util.List;
+import edu.turtlekit2.warbot.message.WarMessage;
+import edu.turtlekit2.warbot.percepts.Percept;
+import edu.turtlekit2.warbot.waritems.WarFood;
+
+public class BrainExplorer extends BrainUnit
+{
+	
+	public BrainExplorer()
+	{
+		super();
+	}
+	
+	@Override
+	public String action()
+	{
+		List<Percept> liste = getPercepts();
+		
+		
+		if(liste.size() > 0)
+		{
+			for(Percept p : liste)
+			{
+				if(p.getType().equals("WarBase") && !p.getTeam().equals(getTeam()))
+				{
+					double anglePercept = p.getAngle();
+					if(anglePercept < 0)
+						anglePercept += 360;
+					
+					double angleGamma = (anglePercept - getMyBaseAngle());
+					double d = this.getDistanceAlKashi(p.getDistance(), getMyBaseDistance(), angleGamma);
+					double a = this.getAngleAlKashi(d, getMyBaseDistance(), p.getDistance());
+					
+					String[] content = new String[2];
+					content[0] = Double.toString(((angleGamma > 180) || ((angleGamma < 0) && (angleGamma > -180))) ? a : -a);
+					content[1] = Double.toString(d);
+					
+					System.out.println(angleGamma);
+					
+					broadcastMessage("WarBase", "EnemyWarBasePosition", content);
+				}
+			}
+		}
+		
+		this.broadcastMessage("WarBase", "MyPosition", null);
+		
+		while(this.isBlocked())
+		{                       
+			this.setRandomHeading();
+		}
+		return "move";
+	}
+	
+	protected void messageHandler()
+	{
+		List<WarMessage> listeM = getMessage();
+		
+		if(listeM.size() > 0)
+		{
+			for(WarMessage m : listeM)
+			{
+				if(m.getSenderType().equals("WarBase"))
+				{
+					if(m.getMessage().equals("WarBasePosition"))
+					{
+						setMyBaseAngle(m.getAngle());
+						setMyBaseDistance(m.getDistance());
+					}
+				}
+			}
+		}
+	}
+	
+	public void perceptHandler()
+	{
+		
+	}
+}

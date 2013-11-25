@@ -1,11 +1,15 @@
 package edu.turtlekit2.warbot.roknus.FSMExplorer;
 
-import edu.turtlekit2.warbot.roknus.BrainAgent;
+import java.util.List;
+
+import edu.turtlekit2.warbot.message.WarMessage;
+import edu.turtlekit2.warbot.percepts.Percept;
+import edu.turtlekit2.warbot.roknus.BrainExplorer;
 
 public abstract class State
 {
 	private String stateName;
-	private BrainAgent brain;
+	private BrainExplorer brain;
 	
 	public State()
 	{
@@ -13,10 +17,65 @@ public abstract class State
 		setBrain(null);
 	}
 	
-	public State(String stateName, BrainAgent brain)
+	public State(String stateName, BrainExplorer brain)
 	{
 		setStateName(stateName);
 		setBrain(brain);
+	}
+	
+	public String action()
+	{
+		return "idle";
+	}
+	
+	protected void messageHandler()
+	{
+		List<WarMessage> listeM = getBrain().getMessage();
+		
+		if(listeM.size() > 0)
+		{
+			for(WarMessage m : listeM)
+			{
+				if(m.getSenderType().equals("WarBase"))
+				{
+					if(m.getMessage().equals("WarBasePosition"))
+					{
+						getBrain().setMyBaseAngle(m.getAngle());
+						getBrain().setMyBaseDistance(m.getDistance());
+					}
+				}
+			}
+		}
+	}
+	
+	protected void perceptHandler()
+	{
+		List<Percept> liste = getBrain().getPercepts();
+		
+		if(liste.size() > 0)
+		{
+			for(Percept p : liste)
+			{
+				if(p.getType().equals("WarBase") && !p.getTeam().equals(getBrain().getTeam()))
+				{
+//					double anglePercept = p.getAngle();
+//					if(anglePercept < 0)
+//						anglePercept += 360;
+					
+					double angleGamma = (p.getAngle() - getBrain().getMyBaseAngle());
+					if(angleGamma < 0)
+						angleGamma += 360;
+					double d = getBrain().getDistanceAlKashi(p.getDistance(), getBrain().getMyBaseDistance(), angleGamma);
+					double a = getBrain().getAngleAlKashi(d, getBrain().getMyBaseDistance(), p.getDistance());
+					
+					String[] content = new String[2];
+					content[0] = Double.toString(((angleGamma > 180) || ((angleGamma < 0) && (angleGamma > -180))) ? a : -a);
+					content[1] = Double.toString(d);
+					
+					getBrain().broadcastMessage("WarBase", "EnemyWarBasePosition", content);
+				}
+			}
+		}
 	}
 
 	public String getStateName()
@@ -29,12 +88,12 @@ public abstract class State
 		this.stateName = stateName;
 	}
 
-	public BrainAgent getBrain() 
+	public BrainExplorer getBrain() 
 	{
 		return brain;
 	}
 
-	public void setBrain(BrainAgent brain)
+	public void setBrain(BrainExplorer brain)
 	{
 		this.brain = brain;
 	}

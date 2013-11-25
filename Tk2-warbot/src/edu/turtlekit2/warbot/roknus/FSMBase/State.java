@@ -10,13 +10,7 @@ public abstract class State
 {
 	private String stateName;
 	private BrainBase brain;
-	
-	public State()
-	{
-		setStateName("unknown");
-		setBrain(null);
-	}
-	
+
 	public State(String stateName, BrainBase brain)
 	{
 		setStateName(stateName);
@@ -75,12 +69,13 @@ public abstract class State
 			}
 			else if(m.getMessage().equals("EnemyWarBasePosition"))
 			{
-				getBrain().setEnemyBaseAngle((m.getAngle()%360 + Double.parseDouble(m.getContent()[0])));
+				getBrain().setEnemyBaseAngle((m.getAngle() + Double.parseDouble(m.getContent()[0])));
 				getBrain().setEnemyBaseDistance((Double.parseDouble(m.getContent()[1])));
 				
 		        for(UnitData r : getBrain().getWarRocketLauncherList())
 		        {
-		        		r.setAngleEnemyBase(r.getAngle()%360 - getBrain().getEnemyBaseAngle());
+		        		
+		        		r.setAngleEnemyBase(r.getAngle() - getBrain().getEnemyBaseAngle());
 		                double d = getBrain().getDistanceAlKashi(getBrain().getEnemyBaseDistance(), r.getDistance(), r.getAngleEnemyBase());
 		                double a = getBrain().getAngleAlKashi(r.getDistance(), d, getBrain().getEnemyBaseDistance());
 
@@ -88,7 +83,7 @@ public abstract class State
 		                content[0] = Double.toString((r.getAngleEnemyBase() > 0) ? a : -a);    
 		                
 		                getBrain().sendMessage(r.getId(),"EnemyWarBasePosition",content);
-		        }				
+		        }
 			}					
 		}
 	}

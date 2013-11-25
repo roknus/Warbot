@@ -1,0 +1,56 @@
+package edu.turtlekit2.warbot.roknus;
+
+import java.util.List;
+
+import edu.turtlekit2.warbot.message.WarMessage;
+import edu.turtlekit2.warbot.percepts.Percept;
+
+public class BrainRocketLauncher extends BrainUnit
+{
+	private boolean warbase;
+	
+	public BrainRocketLauncher()
+	{
+		setWarbase(false);
+	}
+	
+	@Override
+	public String action() 
+	{
+
+		this.broadcastMessage("WarBase", "MyPosition", null);
+		
+		while(this.isBlocked())
+		{
+			this.setRandomHeading();
+		}
+
+		return "move";
+	}
+	
+	protected void messageHandler()
+	{
+		List<WarMessage> listeM = getMessage();
+		
+		for(WarMessage m : listeM)
+		{
+			if(m.getMessage().equals("WarBasePosition") && !this.getWarbase())
+			{
+				//this.setHeading(m.getAngle());
+			}
+			if(m.getMessage().equals("EnemyWarBasePosition"))
+			{
+				this.setWarbase(true);
+				this.setHeading(m.getAngle()+Double.parseDouble(m.getContent()[0]));
+			}
+		}
+	}
+
+	public boolean getWarbase() {
+		return warbase;
+	}
+
+	public void setWarbase(boolean warbase) {
+		this.warbase = warbase;
+	}
+}

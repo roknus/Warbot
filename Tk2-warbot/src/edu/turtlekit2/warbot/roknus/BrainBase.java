@@ -19,7 +19,7 @@ public class BrainBase extends BrainAgent
 	public BrainBase()
 	{
 		super();
-		state = new StateDefense();
+		state = new StateDefense(this);
 		warExplorerList = new ArrayList<UnitData>();
 		warRocketLauncherList = new ArrayList<UnitData>();
 	}

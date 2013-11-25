@@ -4,15 +4,29 @@ import edu.turtlekit2.warbot.roknus.BrainBase;
 
 public class StateAttack extends State 
 {
-	public StateAttack() 
+	public StateAttack(BrainBase brain) 
 	{
-		// TODO Auto-generated constructor stub
+		super("Attack", brain);
 	}
 
-	public StateAttack(String stateName, BrainBase brain) 
+	public String action()
 	{
-		super(stateName, brain);
-		// TODO Auto-generated constructor stub
+		if(!getBrain().emptyBag())
+		{
+			return "eat";
+		}		
+		
+		messageHandler();
+		
+		getBrain().broadcastMessage("WarExplorer", "WarBasePosition", null);
+		getBrain().broadcastMessage("WarRocketLauncher", "WarBasePosition", null);
+		
+		if(getBrain().getEnergy() > 12000)
+		{
+			getBrain().setNextAgentCreate("Explorer");
+			return "create";
+		}
+		
+		return "action";
 	}
-
 }

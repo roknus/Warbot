@@ -1,0 +1,30 @@
+package edu.turtlekit2.warbot.roknus.FSMExplorer;
+
+import edu.turtlekit2.warbot.roknus.BrainExplorer;
+
+public class StateDefense extends State {
+
+	public StateDefense() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public StateDefense(String stateName, BrainExplorer brain) {
+		super(stateName, brain);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public String action()
+	{
+		getBrain().messageHandler();
+		perceptHandler();
+		
+		this.broadcastMessage("WarBase", "MyPosition", null);
+		
+		while(this.isBlocked())
+		{                       
+			this.setRandomHeading();
+		}
+		return "move";
+	}
+
+}

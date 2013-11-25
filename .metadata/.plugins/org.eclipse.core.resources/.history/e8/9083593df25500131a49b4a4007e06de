@@ -1,0 +1,101 @@
+package edu.turtlekit2.warbot.roknus.FSMExplorer;
+
+import java.util.List;
+
+import edu.turtlekit2.warbot.message.WarMessage;
+import edu.turtlekit2.warbot.percepts.Percept;
+import edu.turtlekit2.warbot.roknus.BrainExplorer;
+
+public abstract class State
+{
+	private String stateName;
+	private BrainExplorer brain;
+	
+	public State()
+	{
+		setStateName("unknown");
+		setBrain(null);
+	}
+	
+	public State(String stateName, BrainExplorer brain)
+	{
+		setStateName(stateName);
+		setBrain(brain);
+	}
+	
+	public String action()
+	{
+		return "idle";
+	}
+	
+	protected void messageHandler()
+	{
+		List<WarMessage> listeM = getBrain().getMessage();
+		
+		if(listeM.size() > 0)
+		{
+			for(WarMessage m : listeM)
+			{
+				if(m.getSenderType().equals("WarBase"))
+				{
+					if(m.getMessage().equals("WarBasePosition"))
+					{
+						getBrain().setMyBaseAngle(m.getAngle());
+						getBrain().setMyBaseDistance(m.getDistance());
+					}
+				}
+			}
+		}
+	}
+	
+	protected void perceptHandler()
+	{
+		List<Percept> liste = getBrain().getPercepts();
+		
+		if(liste.size() > 0)
+		{
+			for(Percept p : liste)
+			{
+				if(p.getType().equals("WarBase") && !p.getTeam().equals(getTeam()))
+				{
+					double anglePercept = p.getAngle();
+					if(anglePercept < 0)
+						anglePercept += 360;
+					
+					double angleGamma = (anglePercept - getMyBaseAngle());
+					double d = this.getDistanceAlKashi(p.getDistance(), getMyBaseDistance(), angleGamma);
+					double a = this.getAngleAlKashi(d, getMyBaseDistance(), p.getDistance());
+					
+					String[] content = new String[2];
+					content[0] = Double.toString(((angleGamma > 180) || ((angleGamma < 0) && (angleGamma > -180))) ? a : -a);
+					content[1] = Double.toString(d);
+					
+					System.out.println(angleGamma);
+					
+					broadcastMessage("WarBase", "EnemyWarBasePosition", content);
+				}
+			}
+		}
+	}
+
+	public String getStateName()
+	{
+		return stateName;
+	}
+
+	public void setStateName(String stateName) 
+	{
+		this.stateName = stateName;
+	}
+
+	public BrainExplorer getBrain() 
+	{
+		return brain;
+	}
+
+	public void setBrain(BrainExplorer brain)
+	{
+		this.brain = brain;
+	}
+	
+}

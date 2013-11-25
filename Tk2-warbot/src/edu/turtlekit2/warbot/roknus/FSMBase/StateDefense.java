@@ -4,15 +4,9 @@ import edu.turtlekit2.warbot.roknus.BrainBase;
 
 public class StateDefense extends State
 {
-	public StateDefense() 
+	public StateDefense(BrainBase brain) 
 	{
-		// TODO Auto-generated constructor stub
-	}
-
-	public StateDefense(String stateName, BrainBase brain) 
-	{
-		super(stateName, brain);
-		// TODO Auto-generated constructor stub
+		super("Defense", brain);
 	}
 	
 	public String action()

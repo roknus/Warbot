@@ -1,0 +1,47 @@
+package edu.turtlekit2.warbot.roknus.FSMExplorer;
+
+import edu.turtlekit2.warbot.roknus.BrainExplorer;
+
+public abstract class State
+{
+	private String stateName;
+	private BrainExplorer brain;
+	
+	public State()
+	{
+		setStateName("unknown");
+		setBrain(null);
+	}
+	
+	public State(String stateName, BrainAgent brain)
+	{
+		setStateName(stateName);
+		setBrain(brain);
+	}
+	
+	public String action()
+	{
+		return "idle";
+	}
+
+	public String getStateName()
+	{
+		return stateName;
+	}
+
+	public void setStateName(String stateName) 
+	{
+		this.stateName = stateName;
+	}
+
+	public BrainAgent getBrain() 
+	{
+		return brain;
+	}
+
+	public void setBrain(BrainAgent brain)
+	{
+		this.brain = brain;
+	}
+	
+}

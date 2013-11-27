@@ -1,0 +1,31 @@
+package edu.turtlekit2.warbot.roknus;
+
+import java.util.Hashtable;
+import edu.turtlekit2.warbot.roknus.FSMExplorer.*;
+
+public class BrainExplorer extends BrainUnit
+{
+	private Hashtable<String,State> states;
+	private State state;
+	
+	public BrainExplorer()
+	{
+		super();
+		state = new StateDefense(this);
+	}
+	
+	@Override
+	public String action()
+	{
+		return state.action();
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state)
+	{
+		this.state = state;
+	}
+}

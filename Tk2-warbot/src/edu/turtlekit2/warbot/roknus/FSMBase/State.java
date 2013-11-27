@@ -28,9 +28,9 @@ public abstract class State
 	 */
 	protected void messageHandler()
 	{
-		List<WarMessage> liste = getBrain().getMessage();
+		List<WarMessage> listeM = getBrain().getMessage();
 		
-		for(WarMessage m : liste)
+		for(WarMessage m : listeM)
 		{
 			if(m.getMessage().equals("MyPosition"))
 			{

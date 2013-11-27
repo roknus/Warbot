@@ -8,20 +8,22 @@ public class StateDefense extends State
 	{
 		super("Defense", brain);
 	}
-	
+
+	@Override
 	public String action()
-	{
-		if(!getBrain().emptyBag())
-		{
-			return "eat";
-		}		
-		
+	{	
 		messageHandler();
 		
 		getBrain().broadcastMessage("WarExplorer", "WarBasePosition", null);
 		getBrain().broadcastMessage("WarRocketLauncher", "WarBasePosition", null);
 		
-		if(getBrain().getEnergy() > 12000)
+
+		if(!getBrain().emptyBag())
+		{
+			return "eat";
+		}	
+		
+		if(getBrain().getEnergy() > 3000)
 		{
 			getBrain().setNextAgentCreate("Explorer");
 			return "create";

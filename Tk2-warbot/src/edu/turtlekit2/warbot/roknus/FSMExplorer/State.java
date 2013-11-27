@@ -50,18 +50,14 @@ public abstract class State
 	
 	protected void perceptHandler()
 	{
-		List<Percept> liste = getBrain().getPercepts();
+		List<Percept> listeP = getBrain().getPercepts();
 		
-		if(liste.size() > 0)
+		if(listeP.size() > 0)
 		{
-			for(Percept p : liste)
+			for(Percept p : listeP)
 			{
 				if(p.getType().equals("WarBase") && !p.getTeam().equals(getBrain().getTeam()))
-				{
-//					double anglePercept = p.getAngle();
-//					if(anglePercept < 0)
-//						anglePercept += 360;
-					
+				{	
 					double angleGamma = (p.getAngle() - getBrain().getMyBaseAngle());
 					if(angleGamma < 0)
 						angleGamma += 360;

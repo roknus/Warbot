@@ -1,8 +1,8 @@
 package edu.turtlekit2.warbot.roknus;
 
 import java.util.ArrayList;
-import java.util.List;
-import edu.turtlekit2.warbot.message.WarMessage;
+import java.util.Hashtable;
+
 import edu.turtlekit2.warbot.roknus.FSMBase.*;
 
 /**
@@ -12,6 +12,7 @@ import edu.turtlekit2.warbot.roknus.FSMBase.*;
  */
 public class BrainBase extends BrainAgent
 {
+	private Hashtable<String,State> states;
 	State state;
     ArrayList<UnitData> warExplorerList;
     ArrayList<UnitData> warRocketLauncherList;
@@ -30,6 +31,11 @@ public class BrainBase extends BrainAgent
 		return state.action();
 	}
 	
+	@Override
+	protected void initializeStatesHash()
+	{
+		// TODO Auto-generated method stub	
+	}
 	
 	public State getState() {
 		return state;
@@ -53,5 +59,13 @@ public class BrainBase extends BrainAgent
 
 	public void setWarRocketLauncherList(ArrayList<UnitData> warRocketLauncherList) {
 		this.warRocketLauncherList = warRocketLauncherList;
+	}
+
+	public Hashtable<String, State> getStates() {
+		return states;
+	}
+
+	public void setStates(Hashtable<String, State> states) {
+		this.states = states;
 	}
 }

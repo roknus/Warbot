@@ -1,0 +1,93 @@
+package edu.turtlekit2.warbot.roknus;
+
+import edu.turtlekit2.warbot.WarBrain;
+
+/**
+ * Abstract class for agent brain, implement general methods and attributes for angle calculation 
+ * @author Lucia Florent, Lagniez Jean-Marc
+ * @version 0.1
+ */
+public abstract class BrainAgent extends WarBrain 
+{
+	protected double enemyBaseAngle;
+	protected double enemyBaseDistance;
+	
+	public BrainAgent()
+	{
+		setEnemyBaseAngle(0);
+		setEnemyBaseDistance(0);
+	}
+	
+	@Override
+	abstract public String action();
+	
+	abstract protected void initializeStatesHash();
+
+	/**
+	 * Al-Kashi theorem to find a side of a triangle when you have its opposite angle and the two others side
+	 * @param a First side of the angle
+	 * @param b Second side of the angle
+	 * @param gamma Opposite angle of the side we are searching
+	 * @return Return the opposite side of the angle
+	 */
+	public double getDistanceAlKashi(double a,double b, double gamma)
+	{
+		return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2) - (2 * a * b * Math.cos(Math.toRadians(gamma))));
+	}
+	
+	/**
+	 * Al-Kashi theorem to find an angle of a triangle when you have the length of the 3 sides
+	 * @param a First side of the angle
+	 * @param b Second side of the angle
+	 * @param c Opposite side of the angle
+	 * @return Return the angle in degree between a and b
+	 */
+	public double getAngleAlKashi(double a, double b, double c)
+	{
+		if(a > 0 && b > 0) // Division by 0
+		{
+			double x = (Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / (2 * a * b);
+			if(x > -1 && x < 1) // Arccos take parameters between -1 and 1
+			{
+				return Math.toDegrees(Math.acos(x));
+			}
+		}
+		return 180; // For particular case (2AB close to 0 and (a < -1 && a > 1)) the return is close to 180°
+	}
+	
+	/**
+	 * Return the angle be to oriented to the enemy base
+	 * @return Return an angle in degree to be oriented to the enemy base
+	 */
+	public double getEnemyBaseAngle()
+	{
+		return enemyBaseAngle;
+	}
+	
+	/**
+	 * Set the angle to be oriented to the enemy base
+	 * @param enemyBaseAngle an angle in degree
+	 */
+	public void setEnemyBaseAngle(double enemyBaseAngle) 
+	{
+		this.enemyBaseAngle = (enemyBaseAngle < 0) ? enemyBaseAngle + 360 : enemyBaseAngle; // If the angle is between -180 and 0, tranform it in an angle between 0 and 360
+	}
+
+	/**
+	 * Return the distance between the agent and the enemy base 
+	 * @return Return the distance between the agent and enemy base
+	 */
+	public double getEnemyBaseDistance() 
+	{
+		return enemyBaseDistance;
+	}
+	
+	/**
+	 * Set the distance between the agent and the enemy base	
+	 * @param enemyBaseDistance A distance between the agent and the enemy base
+	 */
+	public void setEnemyBaseDistance(double enemyBaseDistance) 
+	{
+		this.enemyBaseDistance = enemyBaseDistance;
+	}
+}

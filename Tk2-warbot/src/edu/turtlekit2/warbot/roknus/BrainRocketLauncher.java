@@ -1,29 +1,37 @@
 package edu.turtlekit2.warbot.roknus;
 
-import java.util.List;
-
-import edu.turtlekit2.warbot.message.WarMessage;
-import edu.turtlekit2.warbot.percepts.Percept;
+import java.util.Hashtable;
 import edu.turtlekit2.warbot.roknus.FSMRocketLauncher.*;
 
 public class BrainRocketLauncher extends BrainUnit
 {
-	private boolean warbase;
+	Hashtable<String,State> states;
 	private State state;
+	private boolean warbase;
 	
 	public BrainRocketLauncher()
 	{
-		state = new StateDefense(this);
+		super();
+		states = new Hashtable<String,State>();
+		initializeStatesHash();
+		state = states.get("Patrol");
 		setWarbase(false);
 	}
 	
 	@Override
 	public String action() 
 	{
-		System.out.println(getState().getStateName());
 		return state.action();
 	}
 
+	@Override
+	protected void initializeStatesHash()
+	{
+		states.put("Attack", new StateAttack(this));
+		states.put("Defense", new StateDefense(this));
+		states.put("Patrol", new StatePatrol(this));
+	}
+	
 	public boolean getWarbase() {
 		return warbase;
 	}
@@ -38,5 +46,13 @@ public class BrainRocketLauncher extends BrainUnit
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	public Hashtable<String, State> getStates() {
+		return states;
+	}
+
+	public void setStates(Hashtable<String, State> states) {
+		this.states = states;
 	}
 }

@@ -1,0 +1,64 @@
+package edu.turtlekit2.warbot.roknus.FSMExplorer;
+
+import java.util.List;
+
+import edu.turtlekit2.warbot.percepts.Percept;
+import edu.turtlekit2.warbot.roknus.BrainExplorer;
+import edu.turtlekit2.warbot.waritems.WarFood;;
+
+public class StateGatherFood extends State 
+{
+	private Percept bestFood;
+	
+	public StateGatherFood(String stateName, BrainExplorer brain)
+	{
+		super("GatherFood", brain);
+		bestFood = null;
+	}
+
+	@Override
+	public String action()
+	{
+		messageHandler();
+		perceptHandler();
+		
+		if(getBestFood() != null)
+		{
+			getBrain().setHeading(getBestFood().getAngle());
+		}
+		
+		while(getBrain().isBlocked())
+		{                       
+			getBrain().setRandomHeading();
+		}
+		return "move";
+	}
+	
+	@Override
+	protected void perceptHandler()
+	{
+		List<Percept> listeP = getBrain().getPercepts();
+		
+		if(listeP.size() > 0)
+		{
+			for(Percept p : listeP)
+			{
+				if(p.getType().equals("WarFood") && p.getDistance() < WarFood.MAX_DISTANCE_TAKE)
+				{
+					if(getBestFood() == null || p.getDistance() < getBestFood().getDistance())
+					{
+						setBestFood(p);
+					}
+				}
+			}
+		}
+	}
+
+	public Percept getBestFood() {
+		return bestFood;
+	}
+
+	public void setBestFood(Percept bestFood) {
+		this.bestFood = bestFood;
+	}
+}

@@ -1,0 +1,12 @@
+package edu.turtlekit2.warbot.roknus.FSMRocketLauncher;
+
+import edu.turtlekit2.warbot.roknus.BrainRocketLauncher;
+
+public class StatePatrol extends State 
+{
+	public StatePatrol(BrainRocketLauncher brain) 
+	{
+		super("Patrol", brain);s
+	}
+
+}

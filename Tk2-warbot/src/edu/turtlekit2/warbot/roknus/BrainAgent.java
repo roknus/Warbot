@@ -9,6 +9,7 @@ import edu.turtlekit2.warbot.WarBrain;
  */
 public abstract class BrainAgent extends WarBrain 
 {
+	public final static double MAX_DISTANCE_PATROL = 200;
 	protected double enemyBaseAngle;
 	protected double enemyBaseDistance;
 	
@@ -19,10 +20,9 @@ public abstract class BrainAgent extends WarBrain
 	}
 	
 	@Override
-	public String action() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	abstract public String action();
+	
+	abstract protected void initializeStatesHash();
 
 	/**
 	 * Al-Kashi theorem to find a side of a triangle when you have its opposite angle and the two others side

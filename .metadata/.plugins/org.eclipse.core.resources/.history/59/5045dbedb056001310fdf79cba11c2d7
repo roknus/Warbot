@@ -1,0 +1,16 @@
+package edu.turtlekit2.warbot.roknus.FSMExplorer;
+
+import edu.turtlekit2.warbot.roknus.BrainExplorer;
+
+public class StateReturnBase extends State {
+
+	public StateReturnBase() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public StateReturnBase(String stateName, BrainExplorer brain) {
+		super(stateName, brain);
+		// TODO Auto-generated constructor stub
+	}
+
+}

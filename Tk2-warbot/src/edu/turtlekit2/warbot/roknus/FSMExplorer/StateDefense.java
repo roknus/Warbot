@@ -11,7 +11,8 @@ public class StateDefense extends State
 	{
 		super("Defense", brain);
 	}
-	
+
+	@Override
 	public String action()
 	{
 		messageHandler();
@@ -25,5 +26,4 @@ public class StateDefense extends State
 		}
 		return "move";
 	}
-
 }

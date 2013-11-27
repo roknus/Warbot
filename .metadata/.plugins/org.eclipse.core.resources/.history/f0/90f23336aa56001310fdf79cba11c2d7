@@ -1,0 +1,18 @@
+package edu.turtlekit2.warbot.roknus.FSMExplorer;
+
+import edu.turtlekit2.warbot.roknus.BrainBase;
+import edu.turtlekit2.warbot.roknus.FSMBase.State;
+
+public class StateGatherFood extends State 
+{
+	public StateGatherFood(String stateName, BrainBase brain)
+	{
+		super("GatherFood", brain);
+	}
+
+	@Override
+	public String action()
+	{
+		
+	}
+}

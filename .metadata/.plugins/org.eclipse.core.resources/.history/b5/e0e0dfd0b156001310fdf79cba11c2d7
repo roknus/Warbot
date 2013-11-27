@@ -1,0 +1,20 @@
+package edu.turtlekit2.warbot.roknus.FSMExplorer;
+
+import edu.turtlekit2.warbot.roknus.BrainExplorer;
+
+public class StateReturnBase extends State
+{
+
+	public StateReturnBase(BrainExplorer brain) 
+	{
+		super("ReturBase", brain);
+	}
+	
+	@Override
+	public String action()
+	{
+		getBrain().setHeading(getBrain().getMyBaseAngle());
+		return "move";
+	}
+
+}

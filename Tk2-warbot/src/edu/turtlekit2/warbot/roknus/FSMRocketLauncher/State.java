@@ -3,7 +3,6 @@ package edu.turtlekit2.warbot.roknus.FSMRocketLauncher;
 import java.util.List;
 
 import edu.turtlekit2.warbot.message.WarMessage;
-import edu.turtlekit2.warbot.percepts.Percept;
 import edu.turtlekit2.warbot.roknus.BrainRocketLauncher;
 
 public abstract class State
@@ -34,14 +33,18 @@ public abstract class State
 		
 		for(WarMessage m : listeM)
 		{
-			if(m.getMessage().equals("WarBasePosition") && !getBrain().getWarbase())
+			if(m.getSenderType().equals("WarBase"))
 			{
-				//this.setHeading(m.getAngle());
-			}
-			if(m.getMessage().equals("EnemyWarBasePosition"))
-			{
-				getBrain().setWarbase(true);
-				getBrain().setHeading(m.getAngle()+Double.parseDouble(m.getContent()[0]));
+				if(m.getMessage().equals("WarBasePosition"))
+				{
+					getBrain().setMyBaseAngle(m.getAngle());
+					getBrain().setMyBaseDistance(m.getDistance());
+				}
+				if(m.getMessage().equals("EnemyWarBasePosition"))
+				{
+					getBrain().setWarbase(true);
+					getBrain().setHeading(m.getAngle()+Double.parseDouble(m.getContent()[0]));
+				}
 			}
 		}
 	}
